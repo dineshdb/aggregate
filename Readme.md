@@ -19,8 +19,8 @@ This contains a web application written in php. The app is hosted in apache/ngin
    * DELETE		- validate user, get form data, validate form data, delete the category
 - /feed.php		- similar to categories
 - /news.php		- show only the new items since last checked.
-- /archive.php	- Items read in the past
-- /later.php	- Items saved to be read later.
+- /archive.php	- All the items fetched and saved in the database till now except unread items.
+- /later.php	- Items saved to be read later. This actually is just an api and saves [Pocket](https://getpocket.com) or [wallabag](https://wallabag.org).
 - /search.php	- Search page and results.
 - /settings.php
 
