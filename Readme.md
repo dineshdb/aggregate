@@ -30,3 +30,11 @@ We start with simple pages, vannilla javascript and when we see redundancy, we c
 
 ### Crawler
 It runs continuously or through cron jobs to pull the sitemap from each website configured. And then it compares their modified date with local cache and pulls new articles from each website. After pulling the articles, it tries to identify the category and then saves it to the database. This component is network heavy and long running.
+
+## Getting started
+The docker-compose.yml is configured with **nginx** server, **php-fpm** module and **MySQL** server. You don't need to install anything besides docker and docker-compose.
+- Install ``docker`` and ``docker-compose``
+- Start ``docker`` daemon.
+- Run ``docker-compose up`` and the services will start after downloading required app images.
+- Edit your code inside ``app-php`` and see live changes at [http://localhost:8080/](http://localhost:8080/)
+
