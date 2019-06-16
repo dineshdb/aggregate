@@ -1,0 +1,31 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "Web scraper to scrape links off websites",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "node-fetch": "^2.6.0",
+    "open": "^6.3.0",
+    "sitemapper": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dineshdb/scraper.git"
+  },
+  "keywords": [
+    "scraper",
+    "search",
+    "knowledge-extraction"
+  ],
+  "author": "Dinesh Bhattarai <dineshdb@dbhattarai.info.np>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dineshdb/scraper/issues"
+  },
+  "homepage": "https://github.com/dineshdb/scraper#readme"
+}
