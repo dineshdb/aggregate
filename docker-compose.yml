@@ -11,25 +11,26 @@ services:
         networks:
             - code-network
     php:
-        image: php:fpm-alpine
+        build: .
         volumes:
             - ./app-php:/app
         networks:
             - code-network
-    mysql:
+    database:
         image: mysql:latest
         command: --default-authentication-plugin=mysql_native_password
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: example
             MYSQL_DATABASE: 'db'
-            MYSQL_USER: 'app'
-            MYSQL_PASSWORD: 'password'
+            MYSQL_USER: 'aggregator'
+            MYSQL_PASSWORD: 'aggregator'
         volumes:
-            - my-db:/var/lib/mysql
+            - aggregator:/var/lib/mysql
+        networks:
+            - code-network
 volumes:
-    my-db: 
+    aggregator: 
 
 networks:
     code-network:
-        driver: bridge
