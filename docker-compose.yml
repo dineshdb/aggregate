@@ -20,6 +20,7 @@ services:
         image: mysql:latest
         command: --default-authentication-plugin=mysql_native_password
         restart: always
+        container_name: aggregator-database
         environment:
             MYSQL_ROOT_PASSWORD: example
             MYSQL_DATABASE: 'db'
@@ -27,6 +28,7 @@ services:
             MYSQL_PASSWORD: 'aggregator'
         volumes:
             - aggregator:/var/lib/mysql
+            - ./initdb:/docker-entrypoint-initdb.d
         networks:
             - code-network
 volumes:
