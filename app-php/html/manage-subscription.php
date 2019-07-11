@@ -40,6 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 </head>
 
 <body>
+
 <?php include 'header.php' ?>
     <div class="wrapper">
         <table class="table">
