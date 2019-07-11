@@ -125,22 +125,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <div class="row">
 
-        <!-- this column contains the page links -->
-        <div class="column">
-            hola
-        </div>
-
-        <!-- this column contains the iframe elements -->
         <div class="column">
             <iframe src="" name="page_display"></iframe>
         </div>
-
-    </div>
-    <div class="page-footer">
-        <p>        
-            <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-            <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-        </p>
     </div>
 </body>
 </html>
