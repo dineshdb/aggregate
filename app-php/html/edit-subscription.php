@@ -25,23 +25,24 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $result = $stmt->fetch();
     $url = $result["url"];
     $title = $result["title"];
-
 } else if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     $new_url = $_POST["url"];
     $new_title = $_POST["title"];
-
-    $sql_update = "UPDATE pages
-            SET title = ?, url = ?
-            WHERE pageId = ?;";
-                    
+    $pageId = $_POST["pageId"];
+    
+    $sql_update = "UPDATE `pages`
+            SET `title` = ?, url = ?
+            WHERE `pageId` = ?;";
+            
+                   
     $stmt_update = $link->prepare($sql_update);
     $stmt_update->bindParam(1, $new_title);
     $stmt_update->bindParam(2, $new_url);
     $stmt_update->bindParam(3, $pageId);
 
     if ($stmt_update->execute()){
-        header("location: manage-subscription.php");
+        header("location: /manage-subscription.php");
     }
 }
 
@@ -79,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                 <input type="text" name="title" class="form-control"  value="<?php echo $title; ?>">
                 <span class="help-block"><?php echo $title_err; ?></span>
             </div>
-
+			<input type="hidden" name="pageId" value="<?php echo $pageId; ?>">
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Update">
             </div>
