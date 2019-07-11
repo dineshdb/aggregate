@@ -1,5 +1,4 @@
-FROM node:10
-COPY . /app
+FROM node:latest
 WORKDIR /app
 EXPOSE 8080
 CMD [ "npm", "start" ]

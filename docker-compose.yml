@@ -16,6 +16,12 @@ services:
             - ./app-php:/app
         networks:
             - code-network
+    scraper:
+        build: ./scraper/
+        volumes:
+            - ./scraper/:/app
+        networks:
+            - code-network
     database:
         image: mysql:latest
         command: --default-authentication-plugin=mysql_native_password
@@ -29,6 +35,7 @@ services:
         volumes:
             - aggregator:/var/lib/mysql
             - ./initdb:/docker-entrypoint-initdb.d
+            - ./mysql_data:/var/lib/mysql
         networks:
             - code-network
 volumes:

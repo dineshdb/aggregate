@@ -5,13 +5,17 @@
   "main": "index.js",
   "dependencies": {
     "dotenv": "^8.0.0",
+    "knex": "^0.18.4",
+    "mysql2": "^1.6.5",
     "node-fetch": "^2.6.0",
+    "objection": "^1.6.9",
     "open": "^6.3.0",
     "sitemapper": "^2.2.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

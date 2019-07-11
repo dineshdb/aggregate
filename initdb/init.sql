@@ -1,8 +1,21 @@
-create table user(
-	id int(6) unsigned auto_increment primary key,
-	name varchar(30) not null, 
-	email varchar(30) not null,
-	website varchar(50), 
-	comment varchar(255),
-	gender varchar(10) not null
+CREATE TABLE IF NOT EXISTS users (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions (
+    subId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    userId INT NOT NULL, 
+    pageId INT NOT NULL, 
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (pageId) REFERENCES pages(pageId)
+);
+
+CREATE TABLE IF NOT EXISTS pages (
+    pageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    url VARCHAR(2083),
+    title VARCHAR(255)
 );
