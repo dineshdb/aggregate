@@ -25,6 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $result = $stmt->fetch();
     $url = $result["url"];
     $title = $result["title"];
+    
 } else if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     $new_url = $_POST["url"];

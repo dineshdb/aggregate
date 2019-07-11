@@ -53,7 +53,17 @@ $pages_create_table_query = "CREATE TABLE IF NOT EXISTS pages (
     pageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     url VARCHAR(2083),
-    title VARCHAR(255)
+    title VARCHAR(255),
+    type ENUM('SITE', 'RSS', 'SITEMAP', 'ATOM') NOT NULL DEFAULT 'SITE'
+);";
+
+$webpages_create_table_query = "CREATE TABLE IF NOT EXISTS webpages (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    url VARCHAR(2083),
+    title VARCHAR(255),
+    sourceId INT NOT NULL,
+    FOREIGN KEY (sourceId) REFERENCES pages(pageId)
 );";
 
 $stmt = $link->query($table_exists_query);
@@ -66,11 +76,19 @@ if ($stmt->fetchColumn() > 0){
 
 $link->query($pages_create_table_query);
 $link->query($subscriptions_create_table_query);
+$link->query($webpages_create_table_query);
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
+// check the webpages table for new contents
+$webpages_fetch_query = "SELECT url, title FROM webpages LIMIT 10;";
+$stmt = $link->prepare($webpages_fetch_query);
+$stmt->execute();
+
+$result = $stmt->fetchAll();
 
 ?>
 
@@ -84,6 +102,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
+    
+        .wrapper{ padding: 20px; }
         
         * { box-sizing: border-box; }
 
@@ -124,9 +144,33 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php include 'header.php' ?>
 
     <div class="row">
+        <div class="column">
+        <div class="wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach($result as $row) { ?>
+                <tr>
+                    <td> 
+                        <a href="<?php echo $row["url"]; ?>" target="page_display">
+                            <?php echo $row["title"]; ?>
+                        </a>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+
+    </div> 
+        </div>
 
         <div class="column">
-            <iframe src="" name="page_display"></iframe>
+            <iframe src="https://thehackernews.com/2019/07/whatsapp-android-malware.html" height="100%" width="100% name="page_display"></iframe>
         </div>
     </div>
 </body>
