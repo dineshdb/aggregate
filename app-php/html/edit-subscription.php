@@ -15,9 +15,34 @@ require_once "config.php";
 $url = $title = "";
 $url_err = $title_err = "";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "GET"){
+    $pageId = $_GET["pageId"];
+    $sql = "SELECT url, title FROM pages
+            WHERE pageId = ?";
+    $stmt = $link->prepare($sql);
+    $stmt->execute(array($pageId));
 
-    $pageId = $_POST["pageId"];
+    $result = $stmt->fetch();
+    $url = $result["url"];
+    $title = $result["title"];
+
+} else if($_SERVER["REQUEST_METHOD"] == "POST"){
+    
+    $new_url = $_POST["url"];
+    $new_title = $_POST["title"];
+
+    $sql_update = "UPDATE pages
+            SET title = ?, url = ?
+            WHERE pageId = ?;";
+                    
+    $stmt_update = $link->prepare($sql_update);
+    $stmt_update->bindParam(1, $new_title);
+    $stmt_update->bindParam(2, $new_url);
+    $stmt_update->bindParam(3, $pageId);
+
+    if ($stmt_update->execute()){
+        header("location: manage-subscription.php");
+    }
 }
 
 ?>
@@ -27,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Subscriptions</title>
+    <title>Edit Subscriptions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ font: 14px sans-serif; }
@@ -38,8 +63,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="wrapper">
         
-        <h2>Add Subscriptions</h2>
-        <p>Add site URL and a title</p>
+        <h2>Eidt Subscriptions</h2>
+        <p>Eidt site URL and title</p>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         

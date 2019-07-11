@@ -43,19 +43,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 </head>
 
 <body>
-    <script>
-        function deleteSubscription(pageId){
-            console.log(pageId);
-            $.post("delete-subscription.php", {pageId: pageId});
-            window.location.href = "manage-subscription.php";
-        }
-
-        function editSubscription(pageId){
-            console.log(pageId);
-            $.post("edit-subscription.php", {pageId: pageId});
-            window.location.href = "edit-subscription.php";
-        }
-    </script>
 
     <div class="wrapper">
         <table class="table">
@@ -75,13 +62,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                     <td> 
                         <p>
 
-                            <button type="button" class="btn btn-link" 
-                                onClick="editSubscription(<?php echo $row["pageId"]; ?>)">
-                                Edit</button>
-
-                            <button type="button" class="btn btn-link" 
-                                onClick="deleteSubscription(<?php echo $row["pageId"]; ?>)">
-                                Delete</button>
+                            <a href="edit-subscription.php?pageId=<?php echo $row["pageId"]; ?>">
+                                Edit</a>
+                            <a href="delete-subscription.php?pageId=<?php echo $row["pageId"]; ?>">
+                                Delete</a>
                         </p>
                     </td>
                 </tr>
