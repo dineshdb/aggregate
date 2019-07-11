@@ -38,3 +38,55 @@ The docker-compose.yml is configured with **nginx** server, **php-fpm** module a
 - Run ``docker-compose up`` and the services will start after downloading required app images.
 - Edit your code inside ``app-php`` and see live changes at [http://localhost:8080/](http://localhost:8080/)
 
+## Access bash within docker
+```
+docker exec -it aggregator-database bash
+```
+
+## Using the bash login to the MySQL database
+```
+mysql -h localhost -P 3308 -u root -p example
+```
+
+## Select the database and view the table schema
+```
+use db;
+```
+```
+select column_name from information_schema.columns where table_name='pages'
+```
+```
+select column_name from information_schema.columns where table_name='subscriptions'
+```
+
+## Queries used to create tables
+```
+$users_create_table_query = "CREATE TABLE IF NOT EXISTS users (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);";
+```
+
+```
+$subscriptions_create_table_query = "CREATE TABLE IF NOT EXISTS subscriptions (
+    subId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    userId INT NOT NULL, 
+    pageId INT NOT NULL, 
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (pageId) REFERENCES pages(pageId)
+);";
+```
+
+```
+$pages_create_table_query = "CREATE TABLE IF NOT EXISTS pages (
+    pageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    url VARCHAR(2083),
+    title VARCHAR(255)
+);";
+```
+
+
+

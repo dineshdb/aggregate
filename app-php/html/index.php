@@ -33,22 +33,39 @@ $table_exists_query = "SELECT COUNT(*)
     WHERE table_schema = 'db' 
     AND table_name = 'users';";
 
-$create_table_query = "CREATE TABLE users (
+$users_create_table_query = "CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );";
 
+$subscriptions_create_table_query = "CREATE TABLE IF NOT EXISTS subscriptions (
+    subId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+    userId INT NOT NULL, 
+    pageId INT NOT NULL, 
+    FOREIGN KEY (userId) REFERENCES users(id),
+    FOREIGN KEY (pageId) REFERENCES pages(pageId)
+);";
+// intentionally omitting the cascade due to updates and deletes
+
+$pages_create_table_query = "CREATE TABLE IF NOT EXISTS pages (
+    pageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    url VARCHAR(2083),
+    title VARCHAR(255)
+);";
 
 $stmt = $link->query($table_exists_query);
 
 if ($stmt->fetchColumn() > 0){
-
+    
 } else {
-    $link->query($create_table_query);
+    $link->query($users_create_table_query);
 }
 
+$link->query($pages_create_table_query);
+$link->query($subscriptions_create_table_query);
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
