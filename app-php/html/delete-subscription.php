@@ -10,9 +10,9 @@ if(isset($_SESSION["loggedin"]) == false || $_SESSION["loggedin"] === false){
 
 require_once "config.php";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "GET"){
 
-    $pageId = $_POST["pageId"];
+    $pageId = $_GET["pageId"];
 
     $pgs_sql = "DELETE FROM pages 
             WHERE pageId = ?";
@@ -23,10 +23,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $stmt->execute(array($pageId));
 
     $stmt = $link->prepare($subs_sql);
-    $stmt->execute(array($pageId));
-    
-    header("location: manage-subscription.php");
-    exit();
+    if ($stmt->execute(array($pageId))){
+        header("location: manage-subscription.php");
+    }
 }
 
 ?>
