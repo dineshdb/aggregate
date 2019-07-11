@@ -66,14 +66,57 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         body{ font: 14px sans-serif; text-align: center; }
     </style>
 </head>
-<body>
+
+<body onload="showRSS(document.getElementById('selected-site').value)">
     <div class="page-header">
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
     </div>
+
+    <form>
+        <select onchange="showRSS(this.value)" id="selected-site">
+            <option value="">Select an RSS-feed:</option>
+            <option value="r/programming">r/programming</option>
+            <option value="Ycombinator">Hacker News</option>
+            <option value="LWN">LWN.net</option>
+            <option value="ZDN">ZDNet News</option>
+            <option value="Coding Horror">Coding Horror</option>
+            <option value="Google">Google News</option>
+        </select>
+    </form>
+    
+    <br>
+    <div id="rssOutput">RSS-feed will be listed here...</div>
+    <br>
+
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
         <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
     </p>
+
+    <script>
+        function showRSS(str) {
+            if (str.length == 0) { 
+                document.getElementById("rssOutput").innerHTML = "";
+                return;
+            }
+
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {  // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("rssOutput").innerHTML = this.responseText;
+                }
+            }
+
+            xmlhttp.open("GET", "getRSS.php?q=" + str,true);
+            xmlhttp.send();
+        }
+    </script>
 </body>
 </html>
 
