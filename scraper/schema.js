@@ -1,8 +1,8 @@
 const { Model } = require('objection');
 
-class Source extends Model {
+class WebPage extends Model {
 	static get tableName(){
-		return 'sources';
+		return 'webpages';
 	}
 	
 	static get idColumn(){
@@ -16,7 +16,8 @@ class Source extends Model {
 			properties: {
 				id : { type: 'integer' },
 				url: { type: 'string'},
-				title: {type: 'string'},			
+				title: {type: 'string'},
+				sourceId: { type: 'integer'},			
 			}		
 		}	
 	}
@@ -36,17 +37,16 @@ class Page extends Model {
 			type: 'object',
 			required: [ 'url'],
 			properties: {
-				id : { type: 'integer' },
+				pageId : { type: 'integer' },
 				url: { type: 'string'},
 				title: { type: 'string'},
-				source_id: {type: 'integer'},
-				last_updated: { type: 'string'},
+				lastUpdated: { type: 'date'},
 			}	
 		}	
 	}
 }
 
 module.exports = {
-	Source,
+	WebPage,
 	Page,
 }

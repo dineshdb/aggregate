@@ -2,7 +2,7 @@ const Sitemapper = require('sitemapper')
 const dotenv = require('dotenv').config()
 
 const { Model } = require('objection');
-const { Source, Page} = require("./schema")
+const { WebPage, Page} = require("./schema")
 
 var knex = require('knex')({
   client: 'mysql2',
@@ -36,14 +36,12 @@ let base_urls = [
 ];
 
 (async function(){
-	try {
-		// Sleep for 10 seconds so that all other services are ready.
-		await sleep(10000)
-	} catch(ex){
-	}
+	let pages = await Page.query();
 	
-	for (let url of base_urls) {
-		let urls = await fetch(url)	
+	console.log(`Pages: ${pages}`)
+	
+	for (let url of pages) {
+		let urls = await fetch(url)
 		add_individual_pages(urls.sites, url)
 		// TODO: Seee which urls are new and make a list of new urls.
 	}
@@ -51,8 +49,8 @@ let base_urls = [
 
 
 async function add_individual_pages(pages, site) {
-	for (let page of pages) {
-		await Page.query().insert({ url : page, })
+	for (let webpage of pages) {
+		await WebPage.query().insert({ url : webpage, })
 		// Fetch page
 		// Check if the page type is html
 		// Extract title of the page.

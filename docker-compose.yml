@@ -18,6 +18,7 @@ services:
             - code-network
     scraper:
         build: ./scraper/
+        restart: always
         volumes:
             - ./scraper/:/app
         networks:
@@ -33,9 +34,8 @@ services:
             MYSQL_USER: 'aggregator'
             MYSQL_PASSWORD: 'aggregator'
         volumes:
-            - aggregator:/var/lib/mysql
             - ./initdb:/docker-entrypoint-initdb.d
-            - ./mysql_data:/var/lib/mysql
+            - ./mysql_data:/var/lib/mysql/
         networks:
             - code-network
 volumes:
