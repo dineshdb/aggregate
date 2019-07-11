@@ -72,53 +72,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-$url = $title = "";
-$url_err = $title_err = "";
-
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    // url and title come in the POST request
-    
-    if(empty(trim($_POST["url"]))){
-        $url_err = "Please enter url.";
-    } else{
-        $url = trim($_POST["url"]);
-    }
-
-    if(empty(trim($_POST["title"]))){
-        $title_err = "Please enter title.";
-    } else{
-        $title = trim($_POST["title"]);
-    }
-
-    if(empty($username_err) && empty($password_err)){
-        
-        $sql = "INSERT INTO pages (url, title) VALUES (?, ?);";
-        $stmt = $link->prepare($sql);
-
-        $stmt->bindParam(1, $url);
-        $stmt->bindParam(2, $title);
-
-        if ($stmt->execute()){
-
-            // the page was successfully added; now add the subscription
-            $param_userId = $_SESSION["id"];
-            $param_pageId = $link->lastInsertId();
-
-            $sql = "INSERT INTO subscriptions (userId, pageId) VALUES (?,?);";
-
-            $stmt = $link->prepare($sql);
-            $stmt->bindParam(1, $param_userId);
-            $stmt->bindParam(2, $param_pageId);
-
-            $stmt->execute();
-        } else {
-            echo "Could not save values to pages table";
-        }
-
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -178,115 +131,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </div>
 
     <div class="manage-subscriptions">
-
         <p>
-            <button type="button" class="btn btn-info" data-toggle="modal" 
-                    data-target="#add-subscription">Add new Subscription</button>
-
-            <button type="button" class="btn btn-info" data-toggle="modal" 
-                    data-target="#manage-subscriptions">Manage Subscriptions</button>
-
-            
-            <!-- Modal- add-subscription -->
-            <div id="add-subscription" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add new Subscription</h4>
-                    </div>
-                    
-                    <div class="modal-body">
-                        <form class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" 
-                            style="margin:10px" method="post">
-
-                            <div class="form-group <?php echo (!empty($url_err)) ? 'has-error' : ''; ?>">
-                                <input type="text" id="url" name="url" class="form-control" placeholder="Site URL"
-                                    value="<?php echo $url; ?>">
-                            </div>
-
-                            <div class="form-group <?php echo (!empty($title_err)) ? 'has-error' : ''; ?>">
-                                <input type="text" id="title" name="title" class="form-control" placeholder="Site Title"
-                                    value="<?php echo $title; ?>">
-                            </div>
-
-                            <button type="submit" class="btn btn-default" id="add-button">Add</button>
-                        </form>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-
-                </div>
-
-            </div>
-            </div>
-
-            <!-- Modal- manage-subscription -->
-            <div id="manage-subscriptions" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Manage Subscription</h4>
-                    </div>
-                    
-                    <div class="modal-body">
-                    
-                        <?php
-
-                            $userId = $_SESSION["id"];
-
-                            $sql = "SELECT url, title FROM pages 
-                                WHERE pageId IN
-                                (SELECT pageId FROM subscriptions 
-                                WHERE userId = ?);";
-
-                            $stmt = $link->prepare($sql);
-                            $stmt->execute(array($userId));
-
-                            echo " <table class='table'>
-                            <thead>
-                                <tr>
-                                    <th>URL</th>
-                                    <th>Title</th>
-                                </tr>
-                            </thead>";
-
-                            while ($row = $stmt->fetch()) {
-                            
-                                echo "
-                                    <tbody>
-                                        <tr>
-                                            <td>".$row["url"]."</td>
-                                            <td>".$row["title"]."</td>
-                                        </tr>   
-                                    </tbody>";
-                            }
-                            
-                        ?>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-
-                </div>
-
-            </div>
-            </div>
-
-
+            <a href="add-subscription.php">Add new Subscription</a>
+            <a href="manage-subscription.php">Manage Subscriptions</a>
         </p>
-
     </div>
 
     <div class="row">
