@@ -31,14 +31,10 @@ async function fetch(url) {
 	}
 }
 
-let base_urls = [
-	'https://dbhattarai.info.np/sitemap.xml',
-];
-
 (async function(){
-	let pages = await Page.query();
-	
-	console.log(`Pages: ${pages}`)
+	// Sleep for 30 seconds to give database time to start
+	await sleep(30000)
+	let pages = await Page.query().where('type', 'SITEMAP');
 	
 	for (let url of pages) {
 		let urls = await fetch(url)
