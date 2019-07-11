@@ -33,9 +33,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 <head>
     <meta charset="UTF-8">
     <title>Add Subscriptions</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <style type="text/css">
         body{ font: 14px sans-serif; }
         .wrapper{ padding: 20px; }
@@ -46,8 +43,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     <script>
         function deleteSubscription(pageId){
             console.log(pageId);
-            $.post("delete-subscription.php", {pageId: pageId});
-            window.location.href = "manage-subscription.php";
+            $.post("/delete-subscription.php", {pageId: pageId});
+            window.location.reload()
         }
 
         function editSubscription(pageId){
@@ -56,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
             window.location.href = "edit-subscription.php";
         }
     </script>
-
+<?php include 'header.php' ?>
     <div class="wrapper">
         <table class="table">
             <thead>

@@ -82,10 +82,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     <title>Welcome</title>
     
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    
     <style type="text/css">
         body{ font: 14px sans-serif; text-align: center; }
         
@@ -124,18 +120,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </style>
 
 </head>
-
 <body>
-    <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>.</h1>
-    </div>
-
-    <div class="manage-subscriptions">
-        <p>
-            <a href="add-subscription.php">Add new Subscription</a>
-            <a href="manage-subscription.php">Manage Subscriptions</a>
-        </p>
-    </div>
+<?php include 'header.php' ?>
 
     <div class="row">
 
@@ -150,7 +136,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </div>
 
     </div>
-
     <div class="page-footer">
         <p>        
             <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>

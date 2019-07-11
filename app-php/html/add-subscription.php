@@ -52,9 +52,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $stmt->bindParam(2, $param_pageId);
 
             $stmt->execute();
+            $previous = "javascript:history.go(-1)";
+			if(isset($_SERVER['HTTP_REFERER'])) {
+			    $previous = $_SERVER['HTTP_REFERER'];
+			}
         } else {
             echo "Could not save values to pages table";
         }
+        
+        
 
     }
 }
@@ -67,14 +73,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Add Subscriptions</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
+        body{ font: 14px sans-serif;}
         .wrapper{ width: 350px; padding: 20px; }
     </style>
 </head>
 
 <body>
+<?php include 'header.php' ?>
     <div class="wrapper">
         
         <h2>Add Subscriptions</h2>
