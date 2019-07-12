@@ -1,4 +1,4 @@
-# Aggregate
+# Aggregate [Proof of Concept]
 
 ## Components
 ### Reader
@@ -22,7 +22,6 @@ This contains a web application written in php. The app is hosted in apache/ngin
 - /archive.php	- All the items fetched and saved in the database till now except unread items.
 - /later.php	- Items saved to be read later. This actually is just an api and saves [Pocket](https://getpocket.com) or [wallabag](https://wallabag.org).
 - /search.php	- Search page and results.
-- /settings.php
 
 #### Frontend
 The state, pages and routing is all handled from backend by apache/nginx. We include required html/css/javacript in the respective php pages.
@@ -31,10 +30,23 @@ We start with simple pages, vannilla javascript and when we see redundancy, we c
 ### Crawler
 It runs continuously or through cron jobs to pull the sitemap from each website configured. And then it compares their modified date with local cache and pulls new articles from each website. After pulling the articles, it tries to identify the category and then saves it to the database. This component is network heavy and long running.
 
+The crawler is supposed to be a set of microservices which operate on each data on many layers. The services can be for different data sources and transforming of data from one format to another or performing analysis on the pages/data.
+
+- Sources
+  - [x] Sitemap
+  - [ ] RSS
+  - [ ] Atom
+  - [ ] Full fetched Crawling
+- Processing
+  - [ ] Title Extraction of pages
+  - [ ] Category extraction
+  - [ ] Topic Extraction
+
 ## Getting started
 The docker-compose.yml is configured with **nginx** server, **php-fpm** module and **MySQL** server. You don't need to install anything besides docker and docker-compose.
 - Install ``docker`` and ``docker-compose``
 - Start ``docker`` daemon.
+- Initialize your run with `./init.sh`. You should run this everytime you make database changes.
 - Run ``docker-compose up`` and the services will start after downloading required app images.
 - Edit your code inside ``app-php`` and see live changes at [http://localhost:8080/](http://localhost:8080/)
 
@@ -60,33 +72,4 @@ select column_name from information_schema.columns where table_name='subscriptio
 ```
 
 ## Queries used to create tables
-```
-$users_create_table_query = "CREATE TABLE IF NOT EXISTS users (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);";
-```
-
-```
-$subscriptions_create_table_query = "CREATE TABLE IF NOT EXISTS subscriptions (
-    subId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
-    userId INT NOT NULL, 
-    pageId INT NOT NULL, 
-    FOREIGN KEY (userId) REFERENCES users(id),
-    FOREIGN KEY (pageId) REFERENCES pages(pageId)
-);";
-```
-
-```
-$pages_create_table_query = "CREATE TABLE IF NOT EXISTS pages (
-    pageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    url VARCHAR(2083),
-    title VARCHAR(255)
-);";
-```
-
-
-
+They are located inside ``/initdb/init.sql``.
