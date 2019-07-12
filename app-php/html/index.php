@@ -157,8 +157,8 @@ $result = $stmt->fetchAll();
                 <?php foreach($result as $row) { ?>
                 <tr>
                     <td> 
-                        <a href="<?php echo $row["url"]; ?>" target="page_display">
-                            <?php echo $row["title"]; ?>
+                        <a href="<?php echo utf8_decode(urldecode($row["url"])); ?>" target="page_display" onclick="setTarget('<?php echo utf8_decode(urldecode($row["url"])); ?>')">
+                            <?php echo utf8_decode(urldecode($row["url"])); ?>
                         </a>
                     </td>
                 </tr>
@@ -170,9 +170,17 @@ $result = $stmt->fetchAll();
         </div>
 
         <div class="column">
-            <iframe src="https://thehackernews.com/2019/07/whatsapp-android-malware.html" height="100%" width="100% name="page_display"></iframe>
+            <iframe src="https://thehackernews.com/2019/07/whatsapp-android-malware.html" height="100%" width="100%" name="page_display" id="page_display"></iframe>
         </div>
     </div>
 </body>
+<script>
+	let target = document.getElementById("page_display");
+	function setTarget(url){
+		console.log("setting iframe", url)
+		target.src = url;	
+	}
+
+</script>
 </html>
 

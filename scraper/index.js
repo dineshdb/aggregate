@@ -32,20 +32,27 @@ async function fetch(url) {
 }
 
 (async function(){
-	// Sleep for 30 seconds to give database time to start
-	await sleep(30000)
-	let pages = await Page.query().where('type', 'SITEMAP');
+	// Sleep for 10 seconds to give database time to start
+	await sleep(10000)
+	let pages;
+	try {
+		pages = await Page.query().where('type', 'SITEMAP');
+	} catch (ex){
+		console.log("Error getting a list of pages, exiting...")
+		process.exit(1);
+	}
 	
-	for (let url of pages) {
-		let urls = await fetch(url)
-		add_individual_pages(urls.sites, url)
+	for (let page of pages) {
+		let urls = await fetch(page.url)
+		await add_individual_pages(urls, page.url)
 		// TODO: Seee which urls are new and make a list of new urls.
 	}
 })()
 
 
 async function add_individual_pages(pages, site) {
-	for (let webpage of pages) {
+	console.log(pages)
+	for (let webpage of pages.sites) {
 		await WebPage.query().insert({ url : webpage, })
 		// Fetch page
 		// Check if the page type is html

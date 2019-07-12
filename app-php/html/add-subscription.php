@@ -30,14 +30,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $title = trim($_POST["title"]);
     }
+    $type = trim($_POST["type"]);
 
     if(empty($username_err) && empty($password_err)){
         
-        $sql = "INSERT INTO pages (url, title) VALUES (?, ?);";
+        $sql = "INSERT INTO pages (url, title, type) VALUES (?, ?, ?);";
         $stmt = $link->prepare($sql);
 
         $stmt->bindParam(1, $url);
         $stmt->bindParam(2, $title);
+        $stmt->bindParam(3, $type);
 
         if ($stmt->execute()){
 
@@ -52,16 +54,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $stmt->bindParam(2, $param_pageId);
 
             $stmt->execute();
-            $previous = "javascript:history.go(-1)";
-			if(isset($_SERVER['HTTP_REFERER'])) {
-			    $previous = $_SERVER['HTTP_REFERER'];
-			}
+            header('Location: '.'/manage-subscription.php');
         } else {
             echo "Could not save values to pages table";
         }
-        
-        
-
     }
 }
 
@@ -99,7 +95,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="text" name="title" class="form-control"  value="<?php echo $title; ?>">
                 <span class="help-block"><?php echo $title_err; ?></span>
             </div>
-
+			<select name="type">
+				<option value="SITE">Site</option>
+				<option value="RSS">RSS</option>
+				<option value="SITEMAP">Sitemap</option>
+				<option value="ATOM">Atom</option>
+			</select> 
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Add">
             </div>

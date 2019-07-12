@@ -29,7 +29,7 @@ class Page extends Model {
 	}
 	
 	static get idColumn(){
-		return 'id';
+		return 'pageId';
 	}
 	
 	static get jsonSchema(){

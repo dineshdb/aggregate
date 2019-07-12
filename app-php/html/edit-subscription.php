@@ -17,7 +17,7 @@ $url_err = $title_err = "";
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
     $pageId = $_GET["pageId"];
-    $sql = "SELECT url, title FROM pages
+    $sql = "SELECT url, title, type FROM pages
             WHERE pageId = ?";
     $stmt = $link->prepare($sql);
     $stmt->execute(array($pageId));
@@ -25,22 +25,26 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $result = $stmt->fetch();
     $url = $result["url"];
     $title = $result["title"];
+    $type = $result["type"];
     
 } else if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     $new_url = $_POST["url"];
     $new_title = $_POST["title"];
+    $new_type = $_POST["type"];
     $pageId = $_POST["pageId"];
     
     $sql_update = "UPDATE `pages`
-            SET `title` = ?, url = ?
+            SET `title` = ?, url = ?, type=?
             WHERE `pageId` = ?;";
             
                    
     $stmt_update = $link->prepare($sql_update);
     $stmt_update->bindParam(1, $new_title);
     $stmt_update->bindParam(2, $new_url);
-    $stmt_update->bindParam(3, $pageId);
+    $stmt_update->bindParam(3, $new_type);
+    $stmt_update->bindParam(4, $pageId);
+    
 
     if ($stmt_update->execute()){
         header("location: /manage-subscription.php");
@@ -82,6 +86,13 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
                 <span class="help-block"><?php echo $title_err; ?></span>
             </div>
 			<input type="hidden" name="pageId" value="<?php echo $pageId; ?>">
+			<select name="type">
+				<option value="SITE"  <?php if($type == 'SITE'){echo("selected");}?> >Site</option>
+				<option value="RSS" <?php if($type == 'RSS'){echo("selected");}?>>RSS</option>
+				<option value="SITEMAP" <?php if($type == 'SITEMAP'){echo("selected");}?>>Sitemap</option>
+				<option value="ATOM" <?php if($type == 'ATOM'){echo("selected");}?>>Atom</option>
+			</select> 
+
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Update">
             </div>

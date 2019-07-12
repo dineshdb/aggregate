@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
     $userId = $_SESSION["id"];
 
-    $sql = "SELECT url, title, pageId FROM pages 
+    $sql = "SELECT url, title, pageId, type FROM pages 
         WHERE pageId IN
         (SELECT pageId FROM subscriptions 
         WHERE userId = ?);";
@@ -32,7 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Subscriptions</title>
+    <title>Subscriptions</title>
     <style type="text/css">
         body{ font: 14px sans-serif; }
         .wrapper{ padding: 20px; }
@@ -46,8 +46,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
         <table class="table">
             <thead>
                 <tr>
-                    <th>URL</th>
                     <th>Title</th>
+                    <th>URL</th>
+                    <th>Type</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -55,8 +56,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
             <tbody>
                 <?php foreach($result as $row) { ?>
                 <tr>
-                    <td> <?php echo $row["url"]; ?></td>
                     <td> <?php echo $row["title"]; ?></td>
+                    <td> <?php echo $row["url"]; ?></td>
+                    <td> <?php echo $row["type"]; ?></td>
                     <td> 
                         <p>
 

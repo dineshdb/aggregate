@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS pages (
 CREATE TABLE IF NOT EXISTS subscriptions (
     subId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     userId INT NOT NULL, 
-    pageId INT NOT NULL, 
-    FOREIGN KEY (userId) REFERENCES users(id),
-    FOREIGN KEY (pageId) REFERENCES pages(pageId)
+    pageId INT NOT NULL
+--    FOREIGN KEY (userId) REFERENCES users(id),
+--    FOREIGN KEY (pageId) REFERENCES pages(pageId)
 );
 
 
@@ -30,6 +30,9 @@ CREATE TABLE IF NOT EXISTS webpages (
     lastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     url VARCHAR(2083),
     title VARCHAR(255),
-    sourceId INT NOT NULL,
-    FOREIGN KEY (sourceId) REFERENCES pages(pageId)
+    sourceId INT
+--    FOREIGN KEY (sourceId) REFERENCES pages(pageId)
 );
+
+INSERT INTO pages (url, title, type) VALUES ('https://dbhattarai.info.np/sitemap.xml', 'dineshdb', 'SITEMAP');
+INSERT INTO pages (url, title, type) VALUES ('https://atosh502.blogspot.com/sitemap.xml', 'atosh502', 'SITEMAP');
